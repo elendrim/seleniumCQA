@@ -13,16 +13,13 @@ public interface Action {
 
 	Action click();
 
-	String getText();
+	Action should(String expected, Function<WebElement, String> textOnElement, BiConsumer<String, String> assertion);
 
-	Action should(String expected, Function<WebElement, String> textOnElement,
+	Action should(Function<WebElement, String> textOnElement, Consumer<String> assertion);
+
+	Action should(String expected, BiFunction<WebElement, String, String> textOnElement, String parameter,
 			BiConsumer<String, String> assertion);
 
-	Action should(Function<WebElement, String> textOnElement,
-			Consumer<String> assertion);
-	
-	Action should(String expected, BiFunction<WebElement, String, String> textOnElement, String parameter,  BiConsumer<String, String> assertion);
-	
-	Action should(BiFunction<WebElement, String, String> textOnElement, String parameter,  Consumer<String> assertion);
+	Action should(BiFunction<WebElement, String, String> textOnElement, String parameter, Consumer<String> assertion);
 
 }
