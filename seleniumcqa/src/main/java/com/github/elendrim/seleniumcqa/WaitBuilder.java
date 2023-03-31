@@ -1,4 +1,4 @@
-package seleniumcqa;
+package com.github.elendrim.seleniumcqa;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ public class WaitBuilder {
 				.ignoreAll(Arrays.asList(NoSuchElementException.class, AssertionError.class));
 	}
 
-	public static FluentWait<WebDriver> createForCommand(WebDriver driver, Duration pollingEveryDuration, Duration timeoutDuration) {
+	public static FluentWait<WebDriver> createForAction(WebDriver driver, Duration pollingEveryDuration, Duration timeoutDuration) {
 		return new FluentWait<WebDriver>(driver).pollingEvery(pollingEveryDuration).withTimeout(timeoutDuration)
 				.ignoreAll(Arrays.asList(NoSuchElementException.class));
 	}

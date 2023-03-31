@@ -1,4 +1,4 @@
-package seleniumcqa;
+package com.github.elendrim.seleniumcqa;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;

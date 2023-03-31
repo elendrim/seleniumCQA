@@ -1,4 +1,4 @@
-package seleniumcqa;
+package com.github.elendrim.seleniumcqa;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -11,10 +11,14 @@ public interface WebDriverBot {
 
 	void visit(String url);
 
-	Action find(By by);
+	NavigateCommand navigate();
+
+	Command find(By by);
+
+	AlertCommand alert();
 
 	WebDriverBot should(String expected, Function<WebDriver, String> textOnWebDriver, BiConsumer<String, String> assertion);
-	
+
 	WebDriverBot should(Function<WebDriver, String> textOnWebDriver, Consumer<String> assertion);
 
 }

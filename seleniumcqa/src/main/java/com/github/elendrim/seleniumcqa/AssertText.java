@@ -1,4 +1,4 @@
-package seleniumcqa;
+package com.github.elendrim.seleniumcqa;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.containsStringIgnoringCase;
@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.hamcrest.Matchers;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -35,6 +36,7 @@ public class AssertText {
 	public static Function<WebDriver, String> GET_PAGE_SOURCE = (WebDriver driver) -> driver.getPageSource();
 	public static Function<WebDriver, String> GET_TITLE = (WebDriver driver) -> driver.getTitle();
 	public static Function<WebDriver, String> GET_WINDOW_HANDLE = (WebDriver driver) -> driver.getWindowHandle();
+	public static Function<Alert, String> GET_ALERT_TEXT = (Alert alert) -> alert.getText();
 
 	public static BiConsumer<String, String> ASSERT_EQUALS = (String expected, String actual) -> assertThat(actual, is(equalTo(expected)));
 	public static BiConsumer<String, String> ASSERT_EQUALS_IGNORE_CASE = (String expected, String actual) -> assertThat(actual,

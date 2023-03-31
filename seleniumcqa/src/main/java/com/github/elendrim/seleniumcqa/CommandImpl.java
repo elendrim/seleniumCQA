@@ -1,4 +1,4 @@
-package seleniumcqa;
+package com.github.elendrim.seleniumcqa;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -10,16 +10,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 
-public class ActionImpl implements Action {
+public class CommandImpl implements Command {
 
+	private FluentWait<WebDriver> actionWait;
 	private FluentWait<WebDriver> assertionWait;
-	private FluentWait<WebDriver> commandWait;
 	private By by;
 	private Configuration configuration;
 
-	public ActionImpl(WebDriver driver, By by, Configuration configuration) {
-		this.commandWait = WaitBuilder.createForCommand(driver, configuration.getCommandPollingEveryDuration(),
-				configuration.getCommandTimeoutDuration());
+	public CommandImpl(WebDriver driver, By by, Configuration configuration) {
+		this.actionWait = WaitBuilder.createForAction(driver, configuration.getActionPollingEveryDuration(),
+				configuration.getActionTimeoutDuration());
 		this.assertionWait = WaitBuilder.createForAssertion(driver, configuration.getAssertionPollingEveryDuration(),
 				configuration.getAssertionTimeoutDuration());
 		this.by = by;
@@ -28,40 +28,40 @@ public class ActionImpl implements Action {
 	}
 
 	@Override
-	public Action sendKeys(CharSequence... keysToSend) {
-		WebElement element = commandWait.until(Conditions.queryForCommand(by, configuration));
+	public Command sendKeys(CharSequence... keysToSend) {
+		WebElement element = actionWait.until(Conditions.queryForAction(by, configuration));
 		element.sendKeys(keysToSend);
 		return this;
 	}
 
 	@Override
-	public Action click() {
-		WebElement element = commandWait.until(Conditions.queryForCommand(by, configuration));
+	public Command click() {
+		WebElement element = actionWait.until(Conditions.queryForAction(by, configuration));
 		element.click();
 		return this;
 	}
 
 	@Override
-	public Action should(String expected, Function<WebElement, String> textOnElement, BiConsumer<String, String> assertion) {
+	public Command should(String expected, Function<WebElement, String> textOnElement, BiConsumer<String, String> assertion) {
 		assertionWait.until(Conditions.queryAndAssert(expected, by, textOnElement, assertion, configuration));
 		return this;
 	}
 
 	@Override
-	public Action should(Function<WebElement, String> textOnElement, Consumer<String> assertion) {
+	public Command should(Function<WebElement, String> textOnElement, Consumer<String> assertion) {
 		assertionWait.until(Conditions.queryAndAssert(by, textOnElement, assertion, configuration));
 		return this;
 	}
 
 	@Override
-	public Action should(String expected, BiFunction<WebElement, String, String> textOnElement, String parameter,
+	public Command should(String expected, BiFunction<WebElement, String, String> textOnElement, String parameter,
 			BiConsumer<String, String> assertion) {
 		assertionWait.until(Conditions.queryAndAssert(expected, by, textOnElement, parameter, assertion, configuration));
 		return this;
 	}
 
 	@Override
-	public Action should(BiFunction<WebElement, String, String> textOnElement, String parameter, Consumer<String> assertion) {
+	public Command should(BiFunction<WebElement, String, String> textOnElement, String parameter, Consumer<String> assertion) {
 		assertionWait.until(Conditions.queryAndAssert(by, textOnElement, parameter, assertion, configuration));
 		return this;
 	}

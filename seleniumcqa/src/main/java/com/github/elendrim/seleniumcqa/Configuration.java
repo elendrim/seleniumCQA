@@ -1,12 +1,12 @@
-package seleniumcqa;
+package com.github.elendrim.seleniumcqa;
 
 import java.time.Duration;
 
 public class Configuration {
 
 	private Duration highlightSleepDuration = Duration.ZERO;
-	private Duration commandPollingEveryDuration = Duration.ofMillis(500);
-	private Duration commandTimeoutDuration = Duration.ofSeconds(10);
+	private Duration actionPollingEveryDuration = Duration.ofMillis(500);
+	private Duration actionTimeoutDuration = Duration.ofSeconds(10);
 	private Duration assertionPollingEveryDuration = Duration.ofMillis(500);
 	private Duration assertionTimeoutDuration = Duration.ofSeconds(10);
 
@@ -22,12 +22,12 @@ public class Configuration {
 		this.highlightSleepDuration = highlightSleepDuration;
 	}
 
-	public Duration getCommandTimeoutDuration() {
-		return commandTimeoutDuration;
+	public Duration getActionTimeoutDuration() {
+		return actionTimeoutDuration;
 	}
 
-	public void setCommandTimeoutDuration(Duration commandTimeoutDuration) {
-		this.commandTimeoutDuration = commandTimeoutDuration;
+	public void setActionTimeoutDuration(Duration actionTimeoutDuration) {
+		this.actionTimeoutDuration = actionTimeoutDuration;
 	}
 
 	public Duration getAssertionTimeoutDuration() {
@@ -46,12 +46,12 @@ public class Configuration {
 		this.assertionPollingEveryDuration = assertionPollingEveryDuration;
 	}
 
-	public Duration getCommandPollingEveryDuration() {
-		return commandPollingEveryDuration;
+	public Duration getActionPollingEveryDuration() {
+		return actionPollingEveryDuration;
 	}
 
-	public void setCommandPollingEveryDuration(Duration commandPollingEveryDuration) {
-		this.commandPollingEveryDuration = commandPollingEveryDuration;
+	public void setActionPollingEveryDuration(Duration actionPollingEveryDuration) {
+		this.actionPollingEveryDuration = actionPollingEveryDuration;
 	}
 
 }

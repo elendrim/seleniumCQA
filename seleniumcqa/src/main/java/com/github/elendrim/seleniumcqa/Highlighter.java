@@ -1,4 +1,4 @@
-package seleniumcqa;
+package com.github.elendrim.seleniumcqa;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -24,10 +24,13 @@ public class Highlighter {
 
 	public void highlight(WebElement element) {
 		if (configuration.isHighlightEnabled()) {
+
 			String currentStyle = element.getAttribute("style");
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("arguments[0].setAttribute('style', arguments[1]);", element,
 					currentStyle + " color: yellow; border: 5px solid yellow;");
+
+			new Scroller(driver).scrollIntoView(element);
 
 			try {
 				sleeper.sleep(configuration.getHighlightSleepDuration());
