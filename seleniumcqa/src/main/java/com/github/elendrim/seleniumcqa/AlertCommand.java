@@ -1,10 +1,8 @@
 package com.github.elendrim.seleniumcqa;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.openqa.selenium.Alert;
+import com.github.elendrim.seleniumcqa.assertion.Assertion;
+import com.github.elendrim.seleniumcqa.assertion.ExpectedAssertion;
+import com.github.elendrim.seleniumcqa.assertion.GetFromAlert;
 
 public interface AlertCommand {
 
@@ -14,7 +12,7 @@ public interface AlertCommand {
 
 	AlertCommand accept();
 
-	AlertCommand should(Function<Alert, String> textOnAlert, Consumer<String> assertion);
+	AlertCommand should(GetFromAlert getFromAlert, Assertion assertion);
 
-	AlertCommand should(String expected, Function<Alert, String> textOnAlert, BiConsumer<String, String> assertion);
+	AlertCommand should(String expected, GetFromAlert getFromAlert, ExpectedAssertion assertion);
 }

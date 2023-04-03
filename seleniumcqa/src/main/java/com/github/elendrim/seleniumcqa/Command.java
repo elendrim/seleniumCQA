@@ -1,25 +1,39 @@
 package com.github.elendrim.seleniumcqa;
 
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.openqa.selenium.WebElement;
+import com.github.elendrim.seleniumcqa.assertion.Assertion;
+import com.github.elendrim.seleniumcqa.assertion.ExpectedAssertion;
+import com.github.elendrim.seleniumcqa.assertion.GetFromWebElement;
+import com.github.elendrim.seleniumcqa.assertion.GetFromWebElementWithParameter;
 
 public interface Command {
 
 	Command sendKeys(CharSequence... keysToSend);
 
+	Command clear();
+
 	Command click();
 
-	Command should(String expected, Function<WebElement, String> textOnElement, BiConsumer<String, String> assertion);
+	Command selectByVisibleText(String text);
 
-	Command should(Function<WebElement, String> textOnElement, Consumer<String> assertion);
+	Command deselectByVisibleText(String text);
 
-	Command should(String expected, BiFunction<WebElement, String, String> textOnElement, String parameter,
-			BiConsumer<String, String> assertion);
+	Command selectByValue(String value);
 
-	Command should(BiFunction<WebElement, String, String> textOnElement, String parameter, Consumer<String> assertion);
+	Command deselectByValue(String value);
+
+	Command selectByIndex(int index);
+
+	Command deselectByIndex(int index);
+
+	void deselectAll();
+
+	Command should(String expected, GetFromWebElement getFromWebElement, ExpectedAssertion assertion);
+
+	Command should(GetFromWebElement getFromWebElement, Assertion assertion);
+
+	Command should(String expected, GetFromWebElementWithParameter getFromWebElementWithParameter, String parameter,
+			ExpectedAssertion assertion);
+
+	Command should(GetFromWebElementWithParameter getFromWebElementWithParameter, String parameter, Assertion assertion);
 
 }

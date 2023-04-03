@@ -1,10 +1,5 @@
 package com.github.elendrim.seleniumcqa;
 
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,12 +8,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.github.elendrim.seleniumcqa.assertion.Assertion;
+import com.github.elendrim.seleniumcqa.assertion.ExpectedAssertion;
+import com.github.elendrim.seleniumcqa.assertion.GetFromAlert;
+import com.github.elendrim.seleniumcqa.assertion.GetFromWebDriver;
+import com.github.elendrim.seleniumcqa.assertion.GetFromWebElement;
+import com.github.elendrim.seleniumcqa.assertion.GetFromWebElementWithParameter;
+
 public class Conditions {
 
 	public static ExpectedCondition<WebElement> presenceOfElementLocated(final By by) {
 		return new ExpectedCondition<WebElement>() {
 			@Override
-			public WebElement apply(WebDriver driver) {
+			public WebElement apply(final WebDriver driver) {
 				return driver.findElement(by);
 			}
 
@@ -32,7 +34,7 @@ public class Conditions {
 	public static ExpectedCondition<Boolean> isObscured(final WebElement element) {
 		return new ExpectedCondition<Boolean>() {
 			@Override
-			public Boolean apply(WebDriver driver) {
+			public Boolean apply(final WebDriver driver) {
 				String isObscured = "var rec = arguments[0].getBoundingClientRect(); "
 						+ "var elementFromPoint = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2); "
 						+ "if ( elementFromPoint == null ) {return false;} "
@@ -54,10 +56,10 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<WebElement> queryForAction(final By by, Configuration configuration) {
+	public static ExpectedCondition<WebElement> queryForAction(final By by, final Configuration configuration) {
 		return new ExpectedCondition<WebElement>() {
 			@Override
-			public WebElement apply(WebDriver driver) {
+			public WebElement apply(final WebDriver driver) {
 
 				ExpectedCondition<WebElement> presenceOfElement = presenceOfElementLocated(by);
 				WebElement element = presenceOfElement.apply(driver);
@@ -94,14 +96,14 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> queryAndAssert(final String expected, final By by, Function<WebElement, String> textOnElement,
-			final BiConsumer<String, String> assertion, final Configuration configuration) {
+	public static ExpectedCondition<Boolean> queryAndAssert(final String expected, final By by, final GetFromWebElement getFromElement,
+			final ExpectedAssertion assertion, final Configuration configuration) {
 		return new ExpectedCondition<Boolean>() {
 
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
+			public Boolean apply(final WebDriver driver) {
 
 				ExpectedCondition<WebElement> presenceOfElement = presenceOfElementLocated(by);
 				WebElement element = presenceOfElement.apply(driver);
@@ -111,8 +113,8 @@ public class Conditions {
 
 				new Highlighter(driver, configuration).highlight(element);
 
-				this.actual = textOnElement.apply(element);
-				assertion.accept(expected, actual);
+				this.actual = getFromElement.get(element);
+				assertion.assertThat(expected, actual);
 				return true;
 			}
 
@@ -124,14 +126,14 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> queryAndAssert(final By by, Function<WebElement, String> textOnElement,
-			final Consumer<String> assertion, Configuration configuration) {
+	public static ExpectedCondition<Boolean> queryAndAssert(final By by, final GetFromWebElement getFromElement, final Assertion assertion,
+			final Configuration configuration) {
 		return new ExpectedCondition<Boolean>() {
 
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
+			public Boolean apply(final WebDriver driver) {
 
 				ExpectedCondition<WebElement> presenceOfElement = presenceOfElementLocated(by);
 				WebElement element = presenceOfElement.apply(driver);
@@ -141,8 +143,8 @@ public class Conditions {
 
 				new Highlighter(driver, configuration).highlight(element);
 
-				this.actual = textOnElement.apply(element);
-				assertion.accept(actual);
+				this.actual = getFromElement.get(element);
+				assertion.assertThat(actual);
 				return true;
 			}
 
@@ -154,14 +156,15 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> queryAndAssert(String expected, By by, BiFunction<WebElement, String, String> textOnElement,
-			String parameter, BiConsumer<String, String> assertion, Configuration configuration) {
+	public static ExpectedCondition<Boolean> queryAndAssert(final String expected, final By by,
+			final GetFromWebElementWithParameter getFromWebElementWithParameter, final String parameter, final ExpectedAssertion assertion,
+			final Configuration configuration) {
 		return new ExpectedCondition<Boolean>() {
 
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
+			public Boolean apply(final WebDriver driver) {
 
 				ExpectedCondition<WebElement> presenceOfElement = presenceOfElementLocated(by);
 				WebElement element = presenceOfElement.apply(driver);
@@ -171,8 +174,8 @@ public class Conditions {
 
 				new Highlighter(driver, configuration).highlight(element);
 
-				this.actual = textOnElement.apply(element, parameter);
-				assertion.accept(expected, actual);
+				this.actual = getFromWebElementWithParameter.get(element, parameter);
+				assertion.assertThat(expected, actual);
 				return true;
 			}
 
@@ -184,14 +187,15 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> queryAndAssert(By by, BiFunction<WebElement, String, String> textOnElement, String parameter,
-			Consumer<String> assertion, Configuration configuration) {
+	public static ExpectedCondition<Boolean> queryAndAssert(final By by,
+			final GetFromWebElementWithParameter getFromWebElementWithParameter, final String parameter, final Assertion assertion,
+			final Configuration configuration) {
 		return new ExpectedCondition<Boolean>() {
 
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
+			public Boolean apply(final WebDriver driver) {
 
 				ExpectedCondition<WebElement> presenceOfElement = presenceOfElementLocated(by);
 				WebElement element = presenceOfElement.apply(driver);
@@ -201,8 +205,8 @@ public class Conditions {
 
 				new Highlighter(driver, configuration).highlight(element);
 
-				this.actual = textOnElement.apply(element, parameter);
-				assertion.accept(actual);
+				this.actual = getFromWebElementWithParameter.get(element, parameter);
+				assertion.assertThat(actual);
 				return true;
 			}
 
@@ -214,16 +218,16 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> assertion(final String expected, Function<WebDriver, String> textOnWebDriver,
-			final BiConsumer<String, String> assertion) {
+	public static ExpectedCondition<Boolean> assertion(final String expected, final GetFromWebDriver getFromWebDriver,
+			final ExpectedAssertion assertion) {
 		return new ExpectedCondition<Boolean>() {
 
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
-				this.actual = textOnWebDriver.apply(driver);
-				assertion.accept(expected, actual);
+			public Boolean apply(final WebDriver driver) {
+				this.actual = getFromWebDriver.get(driver);
+				assertion.assertThat(expected, actual);
 				return true;
 			}
 
@@ -234,16 +238,15 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> assertion(final Function<WebDriver, String> textOnWebDriver,
-			final Consumer<String> assertion) {
+	public static ExpectedCondition<Boolean> assertion(final GetFromWebDriver getFromWebDriver, final Assertion assertion) {
 		return new ExpectedCondition<Boolean>() {
 
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
-				this.actual = textOnWebDriver.apply(driver);
-				assertion.accept(actual);
+			public Boolean apply(final WebDriver driver) {
+				this.actual = getFromWebDriver.get(driver);
+				assertion.assertThat(actual);
 				return true;
 			}
 
@@ -254,20 +257,20 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> alertAndAssert(final String expected, Function<Alert, String> textOnAlert,
-			final BiConsumer<String, String> assertion) {
+	public static ExpectedCondition<Boolean> alertAndAssert(final String expected, final GetFromAlert getFromAlert,
+			final ExpectedAssertion assertion) {
 		return new ExpectedCondition<Boolean>() {
 
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
+			public Boolean apply(final WebDriver driver) {
 				Alert alert = ExpectedConditions.alertIsPresent().apply(driver);
 				if (alert == null) {
 					return false;
 				}
-				this.actual = textOnAlert.apply(alert);
-				assertion.accept(expected, actual);
+				this.actual = getFromAlert.get(alert);
+				assertion.assertThat(expected, actual);
 				return true;
 			}
 
@@ -278,18 +281,18 @@ public class Conditions {
 		};
 	}
 
-	public static ExpectedCondition<Boolean> alertAndAssert(Function<Alert, String> textOnAlert, final Consumer<String> assertion) {
+	public static ExpectedCondition<Boolean> alertAndAssert(final GetFromAlert getFromAlert, final Assertion assertion) {
 		return new ExpectedCondition<Boolean>() {
 			private String actual;
 
 			@Override
-			public Boolean apply(WebDriver driver) {
+			public Boolean apply(final WebDriver driver) {
 				Alert alert = ExpectedConditions.alertIsPresent().apply(driver);
 				if (alert == null) {
 					return false;
 				}
-				this.actual = textOnAlert.apply(alert);
-				assertion.accept(actual);
+				this.actual = getFromAlert.get(alert);
+				assertion.assertThat(actual);
 				return true;
 			}
 
@@ -304,7 +307,7 @@ public class Conditions {
 		return new ExpectedCondition<Alert>() {
 
 			@Override
-			public Alert apply(WebDriver driver) {
+			public Alert apply(final WebDriver driver) {
 				return ExpectedConditions.alertIsPresent().apply(driver);
 			}
 

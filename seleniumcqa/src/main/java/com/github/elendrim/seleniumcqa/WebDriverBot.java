@@ -1,11 +1,10 @@
 package com.github.elendrim.seleniumcqa;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+
+import com.github.elendrim.seleniumcqa.assertion.Assertion;
+import com.github.elendrim.seleniumcqa.assertion.ExpectedAssertion;
+import com.github.elendrim.seleniumcqa.assertion.GetFromWebDriver;
 
 public interface WebDriverBot {
 
@@ -17,8 +16,10 @@ public interface WebDriverBot {
 
 	AlertCommand alert();
 
-	WebDriverBot should(String expected, Function<WebDriver, String> textOnWebDriver, BiConsumer<String, String> assertion);
+	WebDriverBot should(String expected, GetFromWebDriver getFromWebDriver, ExpectedAssertion assertion);
 
-	WebDriverBot should(Function<WebDriver, String> textOnWebDriver, Consumer<String> assertion);
+	WebDriverBot should(GetFromWebDriver getFromWebDriver, Assertion assertion);
+
+	<T> T doWithWebDriver(ExecuteWithWebDriver<T> executeWithWebDriver);
 
 }

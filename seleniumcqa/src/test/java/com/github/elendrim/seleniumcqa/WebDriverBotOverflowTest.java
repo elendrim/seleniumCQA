@@ -1,7 +1,7 @@
 package com.github.elendrim.seleniumcqa;
 
-import static com.github.elendrim.seleniumcqa.AssertText.ASSERT_EQUALS;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_TEXT;
+import static com.github.elendrim.seleniumcqa.AssertFunctions.ASSERT_EQUALS;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_TEXT;
 
 import java.time.Duration;
 

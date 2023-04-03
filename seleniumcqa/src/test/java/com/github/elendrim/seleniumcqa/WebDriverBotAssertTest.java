@@ -1,22 +1,22 @@
 package com.github.elendrim.seleniumcqa;
 
-import static com.github.elendrim.seleniumcqa.AssertText.ASSERT_CONTAINS;
-import static com.github.elendrim.seleniumcqa.AssertText.ASSERT_EMPTY;
-import static com.github.elendrim.seleniumcqa.AssertText.ASSERT_EQUALS;
-import static com.github.elendrim.seleniumcqa.AssertText.ASSERT_EQUALS_IGNORE_CASE;
-import static com.github.elendrim.seleniumcqa.AssertText.ASSERT_NOT_EMPTY;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_ACCESSIBLE_NAME;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_ARIA_ROLE;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_ATTRIBUTE;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_CSS_VALUE;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_CURRENT_URL;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_DOM_ATTRIBUTE;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_DOM_PROPERTY;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_PAGE_SOURCE;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_TAGNAME;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_TEXT;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_TITLE;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_WINDOW_HANDLE;
+import static com.github.elendrim.seleniumcqa.AssertFunctions.ASSERT_CONTAINS;
+import static com.github.elendrim.seleniumcqa.AssertFunctions.ASSERT_EMPTY;
+import static com.github.elendrim.seleniumcqa.AssertFunctions.ASSERT_EQUALS;
+import static com.github.elendrim.seleniumcqa.AssertFunctions.ASSERT_EQUALS_IGNORE_CASE;
+import static com.github.elendrim.seleniumcqa.AssertFunctions.ASSERT_NOT_EMPTY;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_ACCESSIBLE_NAME;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_ARIA_ROLE;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_ATTRIBUTE;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_CSS_VALUE;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_CURRENT_URL;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_DOM_ATTRIBUTE;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_DOM_PROPERTY;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_PAGE_SOURCE;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_TAGNAME;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_TEXT;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_TITLE;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_WINDOW_HANDLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -33,7 +33,7 @@ public class WebDriverBotAssertTest {
 
 	@ParameterizedTest
 	@ArgumentsSource(WebDriverArgumentsProvider.class)
-	public void assertionTest(WebDriver driver) {
+	public void assertionTest(final WebDriver driver) {
 
 		try {
 			driver.manage().timeouts().implicitlyWait(Duration.ofMillis(0));
@@ -51,7 +51,7 @@ public class WebDriverBotAssertTest {
 					.should("24px", GET_CSS_VALUE, "line-height", ASSERT_EQUALS).should("text", GET_DOM_PROPERTY, "type", ASSERT_EQUALS)
 					.should("input", GET_TAGNAME, ASSERT_EQUALS).should(GET_TEXT, ASSERT_EMPTY);
 
-			webDriverBot.find(By.tagName("h1")).should("Web form", GET_TEXT, AssertText.ASSERT_EQUALS);
+			webDriverBot.find(By.tagName("h1")).should("Web form", GET_TEXT, AssertFunctions.ASSERT_EQUALS);
 
 			// Method not allowed on firefox
 			if (!(driver instanceof FirefoxDriver)) {
@@ -68,7 +68,7 @@ public class WebDriverBotAssertTest {
 
 	@ParameterizedTest
 	@ArgumentsSource(WebDriverArgumentsProvider.class)
-	public void timeoutExceptionOnElementNotFound(WebDriver driver) {
+	public void timeoutExceptionOnElementNotFound(final WebDriver driver) {
 		try {
 			driver.manage().timeouts().implicitlyWait(Duration.ofMillis(0));
 			driver.manage().window().maximize();

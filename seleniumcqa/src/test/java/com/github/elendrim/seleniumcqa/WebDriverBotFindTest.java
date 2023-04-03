@@ -1,8 +1,8 @@
 package com.github.elendrim.seleniumcqa;
 
-import static com.github.elendrim.seleniumcqa.AssertText.ASSERT_EQUALS;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_ATTRIBUTE;
-import static com.github.elendrim.seleniumcqa.AssertText.GET_TEXT;
+import static com.github.elendrim.seleniumcqa.AssertFunctions.ASSERT_EQUALS;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_ATTRIBUTE;
+import static com.github.elendrim.seleniumcqa.GetFunctions.GET_TEXT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
